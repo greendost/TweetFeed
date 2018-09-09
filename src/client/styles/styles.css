@@ -1,0 +1,213 @@
+/* layout */
+:root {
+  --primary-color: #00acee;
+  --secondary-color-dark: #a15400;
+  --text-primary-color: #333;
+  --text-secondary-color: #666;
+
+  --error-color: #761500;
+  --error-bg-color: #dc8775;
+
+  --font-regular: 1rem;
+  --font-small: 0.8rem;
+  --font-large: 1.2rem;
+  --font-subHeader: 1.2rem;
+}
+
+.header {
+  background-color: var(--primary-color);
+  padding: 5px;
+}
+
+#userListSidePanel {
+  border-right: 1px solid var(--primary-color);
+}
+
+/* modules */
+
+/* input elements */
+.input {
+  width: 100%;
+}
+
+/* lists */
+.list {
+  list-style-type: none;
+}
+
+.list--small {
+  font-size: var(--font-small);
+}
+
+.listItem {
+  padding-bottom: 5px;
+}
+
+.listItem::after {
+  clear: both;
+  content: '';
+  display: block;
+}
+
+.listItem--outerItem {
+  /* border-bottom: 1px dotted var(--text-secondary-color); */
+  margin-bottom: 10px;
+}
+
+.listItem__header {
+  margin-bottom: 5px;
+  color: var(--text-secondary-color);
+}
+
+.listItem--bordered {
+  border-bottom: 1px solid var(--primary-color);
+  padding: 5px;
+}
+
+.listItem--bordered:nth-of-type(1) {
+  border-top: 1px solid var(--primary-color);
+}
+
+.listItem--selectedText {
+  color: var(--secondary-color-dark);
+}
+
+/* .listItem--large {
+  composes: listItem;
+  padding: 5px;
+} */
+
+.listItem__textGroup {
+  margin-bottom: 0.5rem;
+}
+
+.option {
+  cursor: pointer;
+  font-size: var(--font-small);
+  user-select: none;
+}
+
+.option--big {
+  padding-left: 10px;
+}
+
+.option--bigOneOnly {
+  padding: 0 5px;
+}
+
+.option__textSmall {
+  font-size: var(--font-small);
+}
+
+.option__textRegular {
+  font-size: var(--font-regular);
+}
+
+.option__textBig {
+  font-size: var(--font-large);
+}
+
+/* links */
+.link {
+  color: var(--text-secondary-color);
+}
+
+/* typography */
+.headerText1 {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.footNote {
+  font-size: var(--font-small);
+  color: var(--text-secondary-color);
+}
+
+.errorMessage {
+  font-size: var(--font-small);
+  color: var(--error-color);
+}
+
+/* subcontainers */
+.clear-float-container::after {
+  clear: both;
+  content: '';
+  display: block;
+}
+
+.subContainer {
+  /* padding: 5px; */
+}
+
+.subContainer--borderBottom {
+  border-bottom: 1px solid var(--primary-color);
+}
+
+.subContainer__header {
+  font-size: var(--font-subHeader);
+  margin-bottom: 10px;
+}
+
+/* field subcontainers - holding label, input element, etc. */
+.subContainer--field {
+  padding: 0px 0px 10px;
+}
+.subContainer--field:last-of-type {
+  padding-bottom: 0px;
+}
+.subContainer--oneFieldOnly {
+  padding: 0px 0px 10px;
+}
+.subContainer--field::after {
+  clear: both;
+  content: '';
+  display: block;
+}
+
+.subContainer--field__label {
+  font-size: var(--font-small);
+}
+
+.subContainer--leaf {
+  padding: 5px;
+}
+
+.subContainer--leafVerticalStack {
+  padding: 0 5px;
+}
+.subContainer--leafVerticalStack:nth-of-type(1) {
+  padding: 5px 5px 0;
+}
+.subContainer--leafVerticalStack:last-of-type {
+  padding: 0 5px 5px;
+}
+
+/* utilities */
+.float-left {
+  float: left;
+}
+.float-right {
+  float: right;
+}
+
+.mb5 {
+  margin-bottom: 5px;
+}
+.mb10 {
+  margin-bottom: 10px;
+}
+.mb20 {
+  margin-bottom: 20px;
+}
+
+.vTop {
+  vertical-align: top;
+}
+
+.ellipsis-for-long-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
