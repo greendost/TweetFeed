@@ -1,0 +1,7 @@
+node_modules
+playground
+dist
+db
+.DS_Store
+dump.rdb
+.env
