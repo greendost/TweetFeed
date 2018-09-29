@@ -73,7 +73,8 @@ export function selectTFItem(categoryIndex, tfIndex) {
       },
       {
         params: {
-          screenname: tfItems[categoryIndex].list[tfIndex].query
+          screenname: tfItems[categoryIndex].list[tfIndex].query,
+          tweet_mode: 'extended'
         }
       }
     );

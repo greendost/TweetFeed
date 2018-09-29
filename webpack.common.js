@@ -1,18 +1,16 @@
-const childProcess = require('child_process');
-const globalPkgDir = childProcess
-  .execSync('npm root -g')
-  .toString()
-  .trim();
-console.log('dir=' + (globalPkgDir + '/' + 'webpack'));
-const webpack = require(globalPkgDir + '/' + 'webpack');
+// if using global webpack.  Switch to local for portability
+// const childProcess = require('child_process');
+// const globalPkgDir = childProcess
+//   .execSync('npm root -g')
+//   .toString()
+//   .trim();
+// console.log('dir=' + (globalPkgDir + '/' + 'webpack'));
+// const webpack = require(globalPkgDir + '/' + 'webpack');
+const webpack = require('webpack');
 const path = require('path');
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 
 module.exports = {
-  entry: {
-    app: ['webpack-hot-middleware/client', './src/client/index.js'],
-    login: ['webpack-hot-middleware/client', './src/client/login.js']
-  },
-  mode: 'development',
   module: {
     rules: [
       {
@@ -50,9 +48,5 @@ module.exports = {
     filename: '[name].bundle.js',
     publicPath: '/dist'
   },
-  devtool: 'cheap-module-eval-source-map',
-  watch: true,
-  plugins: [new webpack.HotModuleReplacementPlugin()]
+  plugins: [new CaseSensitivePathsPlugin()]
 };
-
-// use: ['style-loader', 'css-loader']
