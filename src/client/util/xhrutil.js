@@ -29,11 +29,15 @@ class XhrUtil {
         var errCode = null;
         if (xhr.status !== 200) {
           console.log('error xhr.status=' + xhr.status);
-          errCode = xhr.status;
+          errCode = { code: xhr.status };
         }
-        if (this.errorCallbacks && this.errorCallbacks[errCode]) {
+        if (
+          this.errorCallbacks &&
+          errCode &&
+          this.errorCallbacks[errCode.code]
+        ) {
           console.log('error callback');
-          this.errorCallbacks[errCode]();
+          this.errorCallbacks[errCode.code]();
           return;
         }
         callback(errCode, xhr.responseText);
@@ -56,11 +60,15 @@ class XhrUtil {
       if (xhr.readyState === 4) {
         var errCode = null;
         if (xhr.status !== 200) {
-          errCode = xhr.status;
+          errCode = { code: xhr.status };
         }
-        if (this.errorCallbacks && this.errorCallbacks[errCode]) {
+        if (
+          this.errorCallbacks &&
+          errCode &&
+          this.errorCallbacks[errCode.code]
+        ) {
           console.log('error callback');
-          this.errorCallbacks[errCode]();
+          this.errorCallbacks[errCode.code]();
           return;
         }
         callback(errCode, xhr.responseText);

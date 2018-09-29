@@ -74,16 +74,19 @@ router.get('/get/tweetlist', function(req, res) {
 
   // default for user
   var optionType = 'userTimelineData';
-  var qs = ['screen_name=' + req.query.screenname, `count=${count}`].join('&');
+  var qs = ['screen_name=' + req.query.screenname, `count=${count}`];
+  qs = req.query.tweet_mode
+    ? [...qs, `tweet_mode=${req.query.tweet_mode}`]
+    : qs;
+  qs = qs.join('&');
 
   // if search query
   if (/q=/.test(req.query.screenname)) {
     // console.log('query identified');
     optionType = 'standardSearchData';
     qs = [encodeURI(req.query.screenname), `count=${count}`].join('&');
-    // console.log(`qs=${qs}`);
   }
-
+  console.log(`qs=${qs}`);
   var req = https.request(
     twOptions.getOptions(optionType, {
       queryString: qs
@@ -103,7 +106,7 @@ router.get('/get/tweetlist', function(req, res) {
           }
           tweetData.forEach(function(x) {
             responseData.data.push({
-              text: x['text'],
+              text: x['full_text'],
               created_at: x['created_at'],
               entities: { urls: x['entities']['urls'] },
               id_str: x['id_str']
