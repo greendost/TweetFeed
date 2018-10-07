@@ -14,10 +14,9 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        test: /\.(tsx?)|(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: { presets: 'env' }
+        loader: 'babel-loader'
       },
       {
         test: /\.css$/,
@@ -41,7 +40,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
   },
   output: {
     path: path.resolve(__dirname, 'public/dist'),

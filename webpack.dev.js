@@ -4,8 +4,8 @@ const webpack = require('webpack');
 
 module.exports = merge(common, {
   entry: {
-    app: ['webpack-hot-middleware/client', './src/client/index.js'],
-    login: ['webpack-hot-middleware/client', './src/client/login.js']
+    app: ['webpack-hot-middleware/client', './src/client/index'],
+    login: ['webpack-hot-middleware/client', './src/client/login']
   },
   mode: 'development',
   devtool: 'cheap-module-eval-source-map',

@@ -6,8 +6,10 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devold": "NODE_PATH=`npm root -g`; concurrently \"redis-server\" \"nodemon src/server/server.js\"",
+    "type-check": "tsc --noEmit",
     "dev": "concurrently \"redis-server\" \"nodemon src/server/server.js\"",
-    "deploy": "pm2 deploy ecosystem.config.js production"
+    "deploy-notusedyet": "pm2 deploy ecosystem.config.js production",
+    "prod": "webpack --config webpack.prod.js"
   },
   "nodemonConfig": {
     "ignore": [
@@ -19,15 +21,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-loader": "^7.1.5",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-react": "^6.24.1",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "babel-loader": "^8.0.4",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "child_process": "^1.0.2",
     "concurrently": "^4.0.1",
     "css-loader": "^1.0.0",
     "style-loader": "^0.21.0",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.1",
     "webpack": "^4.20.1",
     "webpack-cli": "^3.1.1",
     "webpack-dev-middleware": "^3.2.0",
@@ -35,6 +40,12 @@
     "webpack-merge": "^4.1.4"
   },
   "dependencies": {
+    "@types/classnames": "^2.2.6",
+    "@types/react": "^16.4.14",
+    "@types/react-dom": "^16.0.8",
+    "@types/react-hot-loader": "^4.1.0",
+    "@types/react-redux": "^6.0.9",
+    "@types/redux": "^3.6.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",
