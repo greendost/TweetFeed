@@ -106,23 +106,10 @@ export function selectTFItem(
   };
 }
 
-export function deleteTFItem(
-  categoryIndex: number,
-  tfIndex: number
-): ThunkAction<void, IReduxState, undefined, IAction> {
-  return (dispatch, getState) => {
-    const state = getState();
-    if (
-      state.selectedTFItem[0] === categoryIndex &&
-      state.selectedTFItem[1] === tfIndex
-    ) {
-      dispatch(unselectTFItem());
-    }
-
-    dispatch({
-      type: actions.DELETE_TF_ITEM,
-      payload: [categoryIndex, tfIndex]
-    });
+export function deleteTFItem(categoryIndex: number, tfIndex: number) {
+  return {
+    type: actions.DELETE_TF_ITEM,
+    payload: [categoryIndex, tfIndex]
   };
 }
 
