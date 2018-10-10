@@ -1,10 +1,10 @@
-const merge = require('webpack-merge');
-const common = require('./webpack.common.js');
+const merge = require("webpack-merge");
+const common = require("./webpack.common.js");
 
 module.exports = merge(common, {
   entry: {
-    app: ['./src/client/index.js'],
-    login: ['./src/client/login.js']
+    app: ["./src/client/index"],
+    login: ["./src/client/login"]
   },
-  mode: 'production'
+  mode: "production"
 });

@@ -1,6 +1,7 @@
 import * as actions from "../actions/actionTypes";
 import { combineReducers, Reducer } from "redux";
 import { IAction, ICategory } from "../actions";
+import { DELETE_TF_ITEM } from "../actions/actionTypes";
 
 export interface IReduxState {
   tfItems: ICategory[];
@@ -32,19 +33,6 @@ function tfItems(state = initialState.tfItems, action: IAction) {
       var updatedList = state.map((category, index) => {
         return categoryIndex === index
           ? Object.assign({}, category, { list: [...category.list, tfItem] })
-          : category;
-      });
-      return updatedList;
-    case actions.DELETE_TF_ITEM:
-      var [categoryIndex, tfIndex] = action.payload;
-      var updatedList = state.map((category, index) => {
-        return index === categoryIndex
-          ? Object.assign({}, category, {
-              list: [
-                ...category.list.slice(0, tfIndex),
-                ...category.list.slice(tfIndex + 1)
-              ]
-            })
           : category;
       });
       return updatedList;
@@ -129,8 +117,46 @@ function deleteCategoryReducer(state = initialState, action: IAction) {
         state.selectedTFItem[1]
       ];
     } else if (categoryIndex == state.selectedTFItem[0]) {
-      newSelectedTFItem = [];
+      newSelectedTFItem = initialState.selectedTFItem;
       newTweetListFetch = initialState.tweetListFetch;
+    }
+  }
+
+  return Object.assign({}, state, {
+    tfItems: newTFItems,
+    selectedTFItem: newSelectedTFItem,
+    tweetListFetch: newTweetListFetch
+  });
+}
+
+function deleteTFItemReducer(state = initialState, action: IAction) {
+  var [categoryIndex, tfIndex] = action.payload;
+  var newSelectedTFItem = state.selectedTFItem;
+  var newTweetListFetch = state.tweetListFetch;
+
+  var newTFItems = state.tfItems.map((category, index) => {
+    return index === categoryIndex
+      ? Object.assign({}, category, {
+          list: [
+            ...category.list.slice(0, tfIndex),
+            ...category.list.slice(tfIndex + 1)
+          ]
+        })
+      : category;
+  });
+
+  // if anything selected, take care of possibly updating selected item
+  if (state.selectedTFItem.length) {
+    if (categoryIndex === state.selectedTFItem[0]) {
+      if (tfIndex < state.selectedTFItem[1]) {
+        newSelectedTFItem = [
+          state.selectedTFItem[0],
+          state.selectedTFItem[1] - 1
+        ];
+      } else if (tfIndex === state.selectedTFItem[1]) {
+        newSelectedTFItem = initialState.selectedTFItem;
+        newTweetListFetch = initialState.tweetListFetch;
+      }
     }
   }
 
@@ -143,7 +169,8 @@ function deleteCategoryReducer(state = initialState, action: IAction) {
 
 // reducers with access to full state
 var flexList = {
-  DELETE_CATEGORY: deleteCategoryReducer
+  DELETE_CATEGORY: deleteCategoryReducer,
+  DELETE_TF_ITEM: deleteTFItemReducer
 };
 
 export default (function flexCombineReducers(flexList: any, cr: any): Reducer {
