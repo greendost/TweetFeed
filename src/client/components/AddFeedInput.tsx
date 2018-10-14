@@ -124,7 +124,12 @@ class AddFeedInput extends Component<IProps, IState> {
               onFocus={() => {
                 this.props.beginAddingFeeds();
               }}
-              placeholder="shakira, or queries e.g. q=nba"
+              placeholder={
+                this.props.feedItems.length
+                  ? "shakira, or queries e.g. q=nba"
+                  : "Please add a category"
+              }
+              disabled={this.props.feedItems.length === 0}
             />
           </div>
           {this.props.mode === "ADD_FEEDS" ? (
@@ -147,6 +152,7 @@ class AddFeedInput extends Component<IProps, IState> {
                 <button
                   className={styles["float-right"]}
                   onClick={this.handleDoneClick}
+                  disabled={this.props.feedItems.length === 0}
                 >
                   Done
                 </button>

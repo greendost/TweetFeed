@@ -1,0 +1,56 @@
+html,
+body,
+[id="root"] {
+  height: 100vh;
+  font-size: 16px;
+  font-family: Helvetica, sans-serif;
+}
+
+.l-gridwrap2x2 {
+  display: grid;
+  grid-template-columns: 225px calc(100vw - 225px);
+  grid-template-rows: 4rem auto;
+  height: 100%;
+}
+
+.l-gridwrap2x1 {
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 4rem auto;
+  height: 100%;
+}
+
+.l-header2x1 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.l-mainPanel2x1 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.l-header2x2 {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 2;
+}
+
+.l-sidePanel2x2 {
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+
+.l-mainPanel2x2 {
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
