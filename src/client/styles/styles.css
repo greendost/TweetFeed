@@ -1,6 +1,7 @@
 /* layout */
 :root {
   --primary-color: #00acee;
+  --secondary-color: #ee7d00;
   --secondary-color-dark: #a15400;
   --text-primary-color: #333;
   --text-secondary-color: #666;
@@ -15,6 +16,13 @@
   --font-subHeader: 1.2rem;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* TODO - move these styles to modules */
 .header {
   background-color: var(--primary-color);
   padding: 5px;
@@ -25,10 +33,25 @@
 }
 
 /* modules */
-
 /* input elements */
 .input {
   width: 100%;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+}
+.form__button {
+  padding: 5px;
+  color: #333;
+  cursor: pointer;
+  align-self: center;
+}
+
+.form__button:disabled {
+  color: #ccc;
+  cursor: none;
 }
 
 /* lists */
@@ -41,7 +64,17 @@
 }
 
 .listItem {
-  padding-bottom: 5px;
+  padding: 5px 0;
+  color: var(--text-primary-color);
+}
+
+.listItem--headerLink {
+  display: inline-block;
+  padding: 5px;
+}
+
+.listItem--headerLink:last-of-type {
+  margin-right: 10px;
 }
 
 .listItem::after {
@@ -50,16 +83,22 @@
   display: block;
 }
 
-.listItem--outerItem {
-  /* border-bottom: 1px dotted var(--text-secondary-color); */
-  margin-bottom: 10px;
+.listItem:hover {
+  background-color: color(var(--secondary-color) s(-60%) l(96%));
 }
 
-.listItem__header {
-  margin-bottom: 5px;
+/* top level item in list of lists, e.g. catogory */
+.outerListItem {
+  /* border-bottom: 1px dotted var(--text-secondary-color); */
+  margin-bottom: 20px;
+}
+
+.outerListItem__header {
+  margin-bottom: 3px;
   color: var(--text-secondary-color);
 }
 
+/* bordered list item module */
 .listItem--bordered {
   border-bottom: 1px solid var(--primary-color);
   padding: 5px;
@@ -86,6 +125,7 @@
   margin-bottom: 0.5rem;
 }
 
+/* option module */
 .option {
   cursor: pointer;
   font-size: var(--font-small);
@@ -123,6 +163,8 @@
   text-align: center;
   margin-bottom: 1rem;
   margin-top: 0.5rem;
+  color: var(--text-secondary-color);
+  overflow: hidden;
 }
 
 .footNote {
@@ -135,6 +177,11 @@
   color: var(--error-color);
 }
 
+.para {
+  margin-bottom: 1rem;
+  line-height: 1.3rem;
+}
+
 /* subcontainers */
 .clear-float-container::after {
   clear: both;
@@ -144,6 +191,10 @@
 
 .panelContainer {
   background-color: color(var(--primary-color) s(-60%) l(95%));
+}
+
+.visibilityContainer {
+  visibility: visible;
 }
 
 .subContainer {
@@ -214,8 +265,14 @@
 .mb10 {
   margin-bottom: 10px;
 }
+.mt10 {
+  margin-top: 10px;
+}
 .mb20 {
   margin-bottom: 20px;
+}
+.mt20 {
+  margin-top: 20px;
 }
 
 .vTop {

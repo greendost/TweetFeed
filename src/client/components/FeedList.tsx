@@ -175,12 +175,15 @@ class FeedList extends Component<IProps, IState> {
         <li
           key={"category" + i}
           data-index={i}
-          className={cx(styles["listItem"], styles["listItem--outerItem"])}
+          className={cx(styles["outerListItem"])}
         >
           <div className={styles["clear-float-container"]}>
             <div
               onClick={this.handleCategoryClick}
-              className={cx(styles["listItem__header"], styles["float-left"])}
+              className={cx(
+                styles["outerListItem__header"],
+                styles["float-left"]
+              )}
             >
               {this.state.categoryIndexBeingRenamed &&
               this.state.categoryIndexBeingRenamed.index === i ? (

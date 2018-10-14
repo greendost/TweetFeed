@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import appStyles from "../styles/App.css";
+import appStyles from "../styles/layout.css";
 import styles from "../styles/styles.css";
 import TweetHeader from "./TweetHeader";
 import TweetList from "./TweetList";
 import cx from "classnames";
 
 const UserMainPanel: React.SFC = () => (
-  <div className={cx(appStyles["l-mainPanel"], styles["panelContainer"])}>
+  <div className={cx(appStyles["l-mainPanel2x2"], styles["panelContainer"])}>
     <TweetHeader />
     <div
       className={cx(
