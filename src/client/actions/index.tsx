@@ -1,6 +1,5 @@
 import AppRequest from "../util/AppRequest";
 import * as actions from "../actions/actionTypes";
-import { ActionCreator } from "redux";
 
 // types
 // thunkAction type: R return value, S Redux state, E extra param, A action
@@ -23,13 +22,64 @@ export interface ITFItem {
 }
 
 // action creators
-export function addTFItem(categoryIndex: number, tfItem: ITFItem) {
+export function addTFItem(
+  categoryIndex: number,
+  tfItem: ITFItem
+): ThunkAction<void, IReduxState, undefined, IAction> {
+  return (dispatch, getState) => {
+    // var tfItems = getState().tfItems;
+    var query = tfItem.query;
+
+    // update selected item
+    // provide immediate feedback - e.g. validating disabled placeholder
+    dispatch({
+      type: actions.VALIDATE_QUERY_REQUEST,
+      payload: ""
+    });
+
+    // and do network fetch
+    AppRequest.post(
+      "/app/adduser",
+      (err: IErrorCodeOrNull, data: any) => {
+        var result = JSON.parse(data);
+        if (!err) {
+          dispatch({
+            type: actions.VALIDATE_QUERY_SUCCESS,
+            payload: {
+              msg: "Success",
+              result: { categoryIndex, tfItem },
+              msgTs: 0
+            }
+          });
+        } else {
+          // error
+          dispatch({
+            type: actions.VALIDATE_QUERY_FAILURE,
+            payload: {
+              msg: result.error
+                ? result.error.errorMsg
+                : "Unable to validate query",
+              msgTs: Date.now()
+            }
+          });
+          return;
+        }
+      },
+      {
+        postData: JSON.stringify({
+          screen_name: query
+        })
+      }
+    );
+  };
+}
+
+// ----
+
+export function importTFItems(tfItems: IReduxState["tfItems"]) {
   return {
-    type: actions.ADD_TF_ITEM,
-    payload: {
-      categoryIndex,
-      tfItem
-    }
+    type: actions.IMPORT_TF_ITEMS,
+    payload: tfItems
   };
 }
 
@@ -63,8 +113,6 @@ export function selectTFItem(
 ): ThunkAction<void, IReduxState, undefined, IAction> {
   return (dispatch, getState) => {
     var tfItems = getState().tfItems;
-    var selectedTFItem = getState().selectedTFItem;
-    var query = tfItems[categoryIndex].list[tfIndex].query;
 
     // update selected item
     dispatch({
@@ -98,8 +146,7 @@ export function selectTFItem(
       },
       {
         params: {
-          screenname: tfItems[categoryIndex].list[tfIndex].query,
-          tweet_mode: "extended"
+          screenname: tfItems[categoryIndex].list[tfIndex].query
         }
       }
     );

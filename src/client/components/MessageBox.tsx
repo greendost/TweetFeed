@@ -6,8 +6,17 @@ import cx from "classnames";
 const MessageBox: React.SFC<{
   msg: string;
   handleCloseClick: (ev: React.MouseEvent) => void;
-}> = ({ msg, handleCloseClick }) => (
-  <div className={cmpStyles["messageBox"]}>
+  inline?: boolean;
+  styleMode?: string;
+}> = ({ msg, handleCloseClick, inline, styleMode }) => (
+  <div
+    className={
+      styleMode === "normal"
+        ? cmpStyles["messageBox--normal"]
+        : cmpStyles["messageBox"]
+    }
+    style={inline ? { display: "inline-block" } : { display: "block" }}
+  >
     <div
       className={cx(
         baseStyles["float-right"],

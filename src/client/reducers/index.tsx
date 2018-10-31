@@ -1,7 +1,6 @@
 import * as actions from "../actions/actionTypes";
 import { combineReducers, Reducer } from "redux";
 import { IAction, ICategory } from "../actions";
-import { DELETE_TF_ITEM } from "../actions/actionTypes";
 
 export interface IReduxState {
   tfItems: ICategory[];
@@ -11,10 +10,15 @@ export interface IReduxState {
     msg: string;
     result: any[];
   };
+  validateQueryFetch: {
+    status: string;
+    msg: string;
+    msgTs: number;
+  };
   mode: string;
 }
 
-const initialState: IReduxState = {
+export const initialState: IReduxState = {
   tfItems: [{ name: "Category 1", list: [] }],
   selectedTFItem: [],
   tweetListFetch: {
@@ -22,20 +26,24 @@ const initialState: IReduxState = {
     msg: "",
     result: []
   },
-  mode: "DEFAULT"
-  // openTFCategories: [],
+  mode: "DEFAULT",
+  validateQueryFetch: {
+    status: "NOT_LOADED",
+    msg: "",
+    msgTs: 0
+  }
 };
 
 function tfItems(state = initialState.tfItems, action: IAction) {
   switch (action.type) {
-    case actions.ADD_TF_ITEM:
-      var { categoryIndex, tfItem } = action.payload;
-      var updatedList = state.map((category, index) => {
-        return categoryIndex === index
-          ? Object.assign({}, category, { list: [...category.list, tfItem] })
-          : category;
-      });
-      return updatedList;
+    // case actions.ADD_TF_ITEM:
+    //   var { categoryIndex, tfItem } = action.payload;
+    //   var updatedList = state.map((category, index) => {
+    //     return categoryIndex === index
+    //       ? Object.assign({}, category, { list: [...category.list, tfItem] })
+    //       : category;
+    //   });
+    //   return updatedList;
     case actions.ADD_CATEGORY:
       return [...state, action.payload];
     case actions.UPDATE_CATEGORY:
@@ -98,7 +106,29 @@ function mode(state = "DEFAULT", action: IAction) {
   }
 }
 
-// full state
+function validateQueryFetch(
+  state = initialState.validateQueryFetch,
+  action: IAction
+) {
+  switch (action.type) {
+    case actions.VALIDATE_QUERY_REQUEST:
+      return Object.assign({}, state, {
+        status: "LOADING",
+        msg: "",
+        msgTs: 0
+      });
+    case actions.VALIDATE_QUERY_FAILURE:
+      return Object.assign({}, state, {
+        status: "ERROR",
+        msg: action.payload.msg,
+        msgTs: action.payload.msgTs
+      });
+    default:
+      return state;
+  }
+}
+
+// --- full state -----
 function deleteCategoryReducer(state = initialState, action: IAction) {
   var categoryIndex = action.payload;
   var newSelectedTFItem = state.selectedTFItem;
@@ -167,10 +197,40 @@ function deleteTFItemReducer(state = initialState, action: IAction) {
   });
 }
 
+function importTFItemsReducer(state = initialState, action: IAction) {
+  return Object.assign({}, state, {
+    tfItems: action.payload,
+    selectedTFItem: initialState.selectedTFItem,
+    tweetListFetch: initialState.tweetListFetch
+  });
+}
+
+function addTFItemReducer(state = initialState, action: IAction) {
+  // for  actions.VALIDATE_QUERY_SUCCESS:
+
+  var { categoryIndex, tfItem } = action.payload.result;
+  var newValidateQueryFetch = {
+    status: "LOADED",
+    msg: "",
+    msgTs: 0
+  };
+  var newTFItems = state.tfItems.map((category, index) => {
+    return categoryIndex === index
+      ? Object.assign({}, category, { list: [...category.list, tfItem] })
+      : category;
+  });
+  return Object.assign({}, state, {
+    validateQueryFetch: newValidateQueryFetch,
+    tfItems: newTFItems
+  });
+}
+
 // reducers with access to full state
 var flexList = {
-  DELETE_CATEGORY: deleteCategoryReducer,
-  DELETE_TF_ITEM: deleteTFItemReducer
+  [actions.DELETE_CATEGORY]: deleteCategoryReducer,
+  [actions.DELETE_TF_ITEM]: deleteTFItemReducer,
+  [actions.IMPORT_TF_ITEMS]: importTFItemsReducer,
+  [actions.VALIDATE_QUERY_SUCCESS]: addTFItemReducer
 };
 
 export default (function flexCombineReducers(flexList: any, cr: any): Reducer {
@@ -187,6 +247,7 @@ export default (function flexCombineReducers(flexList: any, cr: any): Reducer {
     tfItems,
     selectedTFItem,
     tweetListFetch,
+    validateQueryFetch,
     mode
   })
 );

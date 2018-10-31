@@ -1,11 +1,10 @@
-import React, { Component, ChangeEvent } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import {
   selectTFItem,
   deleteTFItem,
   updateCategory,
   deleteCategory,
-  ICategory,
   IAction
 } from "../actions";
 import styles from "../styles/styles.css";
@@ -15,15 +14,15 @@ import { IReduxState } from "../reducers";
 // types
 import { ThunkDispatch } from "redux-thunk";
 
-interface IEvent {
-  target: {
-    parentNode: HTMLElement;
-    dataset: any;
-  };
-  key: string;
-}
+// interface IEvent {
+//   target: {
+//     parentNode: HTMLElement;
+//     dataset: any;
+//   };
+//   key: string;
+// }
 
-interface IState {
+export interface IState {
   categoryIndexBeingEdited: { index: number } | null;
   categoryIndexBeingRenamed: { index: number } | null;
   errorMsg: string;
@@ -68,10 +67,10 @@ class FeedList extends Component<IProps, IState> {
   }
 
   handleDeleteCategory(event: React.MouseEvent) {
+    this.props.deleteCategory(this.state.categoryIndexBeingEdited!.index);
     this.setState({
       categoryIndexBeingEdited: null
     });
-    this.props.deleteCategory(this.state.categoryIndexBeingEdited!.index);
   }
 
   handleDeleteUser(event: React.MouseEvent<HTMLDivElement>) {
@@ -156,8 +155,12 @@ class FeedList extends Component<IProps, IState> {
               this.props.selectedTFItem.length &&
               this.props.selectedTFItem[0] === i &&
               this.props.selectedTFItem[1] === j
-                ? cx(styles["float-left"], styles["listItem--selectedText"])
-                : styles["float-left"]
+                ? cx(
+                    styles["float-left"],
+                    styles["clickable"],
+                    styles["listItem--selectedText"]
+                  )
+                : cx(styles["float-left"], styles["clickable"])
             }
             onClick={this.handleGetTweets}
           >
@@ -238,6 +241,7 @@ class FeedList extends Component<IProps, IState> {
                   styles["option--big"],
                   styles["option__textRegular"]
                 )}
+                data-type="category-rename"
               >
                 Rename
               </div>
@@ -248,6 +252,7 @@ class FeedList extends Component<IProps, IState> {
                   styles["option--big"],
                   styles["option__textRegular"]
                 )}
+                data-type="category-delete"
               >
                 Delete
               </div>
@@ -282,7 +287,7 @@ interface IDispatchProps {
 
 interface IOwnProps {}
 
-type IProps = IStateProps & IDispatchProps & IOwnProps;
+export type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const mapStateToProps = (state: IReduxState) => ({
   tfItems: state.tfItems,

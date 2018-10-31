@@ -29,7 +29,7 @@ class XhrUtil {
     this.errorCallbacks = null;
   }
 
-  setErrorCallback(serverErrorCode: number, callback: ICallback) {
+  setErrorCallback(serverErrorCode: string, callback: ICallback) {
     if (!this.errorCallbacks) this.errorCallbacks = {};
     this.errorCallbacks[serverErrorCode] = callback;
   }
@@ -47,6 +47,7 @@ class XhrUtil {
     xhr.onreadystatechange = function(this: XhrUtil) {
       if (xhr.readyState === 4) {
         var errCode = null;
+        var responseText = xhr.responseText;
         if (xhr.status !== 200) {
           console.log("error xhr.status=" + xhr.status);
           errCode = { code: xhr.status };
@@ -60,7 +61,10 @@ class XhrUtil {
           this.errorCallbacks[errCode.code]();
           return;
         }
-        callback(errCode, xhr.responseText);
+        if (errCode && errCode.code === 0) {
+          responseText = `{ "error": { "errorMsg": "Network error"}}`;
+        }
+        callback(errCode, responseText);
       }
     }.bind(this);
     xhr.open("GET", getUrl);
@@ -79,6 +83,7 @@ class XhrUtil {
     xhr.onreadystatechange = function(this: XhrUtil) {
       if (xhr.readyState === 4) {
         var errCode: IErrorCodeOrNull = null;
+        var responseText = xhr.responseText;
         if (xhr.status !== 200) {
           errCode = { code: xhr.status };
         }
@@ -91,7 +96,10 @@ class XhrUtil {
           this.errorCallbacks[errCode.code]();
           return;
         }
-        callback(errCode, xhr.responseText);
+        if (errCode && errCode.code === 0) {
+          responseText = `{ "error": { "errorMsg": "Network error"}}`;
+        }
+        callback(errCode, responseText);
       }
     }.bind(this);
     xhr.open("POST", postUrl);
