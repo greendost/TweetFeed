@@ -70,9 +70,7 @@ class LoginApp extends Component<{}, IState> {
             <p className={styles["para"]}>
               Since this app uses my Twitter key, I have put in a session limit
               of 15 minutes. Feel free to explore, organizing Twitter screen
-              names and queries within lists. If you like it, feel free to
-              download a copy (coming soon) and use your personal Twitter
-              development key.
+              names and queries within lists.
             </p>
             <form
               method="POST"
