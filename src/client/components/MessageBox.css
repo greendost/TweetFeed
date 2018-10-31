@@ -1,4 +1,4 @@
-@import '../styles/styles.css';
+@import "../styles/styles.css";
 
 .messageBox {
   color: var(--error-color);
@@ -7,9 +7,22 @@
   padding: 5px;
 }
 
+.messageBox--normal {
+  color: var(--text-secondary-color);
+  padding: 5px;
+  border: 1px solid var(--text-secondary-color);
+  background-color: var(--container-bg-color);
+}
+
 .messageBox:after {
   clear: both;
-  content: '';
+  content: "";
+  display: block;
+}
+
+.messageBox--normal:after {
+  clear: both;
+  content: "";
   display: block;
 }
 

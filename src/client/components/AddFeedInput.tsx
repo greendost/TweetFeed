@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import AppRequest from "../util/AppRequest";
+// import AppRequest from "../util/AppRequest";
 import MessageBox from "./MessageBox";
 import cx from "classnames";
 import styles from "../styles/styles.css";
@@ -19,11 +19,12 @@ import { ThunkDispatch } from "redux-thunk";
 import { IAction } from "../actions";
 
 interface IState {
-  errorMsg: "";
-  addUserStatus: string;
+  localErrorMsg: string;
+  localErrorMsgTs: number;
+  // addUserStatus: string;
 }
 
-interface IFakeEvent {
+interface IEvent {
   key: string;
 }
 
@@ -32,15 +33,29 @@ class AddFeedInput extends Component<IProps, IState> {
     super(props);
 
     this.state = {
-      errorMsg: "",
-      addUserStatus: "NOT_LOADED"
+      localErrorMsg: "",
+      localErrorMsgTs: 0
+      // addUserStatus: "NOT_LOADED"
     };
 
     this.handleEnter = this.handleEnter.bind(this);
     this.handleDoneClick = this.handleDoneClick.bind(this);
   }
 
-  handleEnter(event: React.KeyboardEvent<HTMLInputElement> | IFakeEvent) {
+  componentDidUpdate() {
+    // if (
+    //   this.props.validateQueryFetch.status === "ERROR" &&
+    //   this.props.validateQueryFetch.msgTs !== this.state.localErrorMsgTs
+    // )
+    if (this.props.validateQueryFetch.msgTs !== this.state.localErrorMsgTs) {
+      this.setState({
+        localErrorMsg: this.props.validateQueryFetch.msg,
+        localErrorMsgTs: this.props.validateQueryFetch.msgTs
+      });
+    }
+  }
+
+  handleEnter(event: React.KeyboardEvent<HTMLInputElement> | IEvent) {
     const userName = (document.getElementById(
       "add-new-user"
     )! as HTMLInputElement).value;
@@ -50,31 +65,11 @@ class AddFeedInput extends Component<IProps, IState> {
 
     if (userName) {
       if (event.key === "Enter") {
-        AppRequest.post(
-          "/app/adduser",
-          (err, data) => {
-            if (err) {
-              var result = JSON.parse(data);
-              this.setState({
-                addUserStatus: "ERROR",
-                errorMsg: result["errorMsg"]
-              });
-              return;
-            }
-
-            this.setState({ addUserStatus: "LOADED" });
-            var tfItem = {
-              query: userName
-            };
-            this.props.addTFItem(categoryIndex, tfItem);
-          },
-          {
-            postData: JSON.stringify({
-              screen_name: userName
-            })
-          }
-        );
-        this.setState({ addUserStatus: "LOADING" });
+        var tfItem = {
+          query: userName
+        };
+        this.props.addTFItem(categoryIndex, tfItem);
+        // this.setState({ addUserStatus: "LOADING" });
         (document.getElementById("add-new-user")! as HTMLInputElement).value =
           "";
       }
@@ -108,11 +103,11 @@ class AddFeedInput extends Component<IProps, IState> {
             <p className={styles["subContainer--field__label"]}>
               Username / query
             </p>
-            {this.state.errorMsg ? (
+            {this.state.localErrorMsg ? (
               <MessageBox
-                msg={this.state.errorMsg}
+                msg={this.props.validateQueryFetch.msg}
                 handleCloseClick={() => {
-                  this.setState({ errorMsg: "" });
+                  this.setState({ localErrorMsg: "" });
                 }}
               />
             ) : null}
@@ -126,10 +121,15 @@ class AddFeedInput extends Component<IProps, IState> {
               }}
               placeholder={
                 this.props.feedItems.length
-                  ? "shakira, or queries e.g. q=nba"
+                  ? this.props.validateQueryFetch.status === "LOADING"
+                    ? "validating query..."
+                    : "shakira, or queries e.g. q=nba"
                   : "Please add a category"
               }
-              disabled={this.props.feedItems.length === 0}
+              disabled={
+                this.props.feedItems.length === 0 ||
+                this.props.validateQueryFetch.status === "LOADING"
+              }
             />
           </div>
           {this.props.mode === "ADD_FEEDS" ? (
@@ -168,7 +168,7 @@ class AddFeedInput extends Component<IProps, IState> {
 interface IStateProps {
   feedItems: IReduxState["tfItems"];
   mode: IReduxState["mode"];
-  tweetListFetch: IReduxState["tweetListFetch"];
+  validateQueryFetch: IReduxState["validateQueryFetch"];
 }
 
 interface IDispatchProps {
@@ -184,7 +184,7 @@ type IProps = IStateProps & IDispatchProps & IOwnProps;
 const mapStateToProps = (state: IReduxState) => ({
   feedItems: state.tfItems,
   mode: state.mode,
-  tweetListFetch: state.tweetListFetch
+  validateQueryFetch: state.validateQueryFetch
 });
 
 const mapDispatchToProps = (
@@ -196,8 +196,6 @@ const mapDispatchToProps = (
   finishAddingFeeds: () => dispatch(finishAddingFeeds())
 });
 
-// disabled={this.state.addUserStatus === 'LOADING'}
-// AddFeedInput = connect(mapStateToProps, mapDispatchToProps)(AddFeedInput);
 export default connect(
   mapStateToProps,
   mapDispatchToProps

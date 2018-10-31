@@ -104,12 +104,17 @@ app.get("/loginkey", (req, res) => {
 
 app.post("/mainapp", (req, res) => {
   // console.log('/app req.body=' + JSON.stringify(Object.keys(req.body)));
-
+  console.log("mainapp/* post request");
   if (redisClient.exists(req.body.loginKey)) {
     res.render("index", { key: req.body.loginKey });
   } else {
     res.redirect("/login");
   }
+});
+
+app.get(["/mainapp", "/mainapp/*"], (req, res) => {
+  console.log("/mainapp/ or /mainapp/*");
+  res.render("index", { key: "" });
 });
 
 // --- api -------------------------------------------------
@@ -122,14 +127,16 @@ app.post("/app/adduser", function(req, res) {
 
   if (req.body.screen_name) {
     if (/q=/.test(req.body.screen_name)) {
-      res.sendStatus(200);
+      // res.sendStatus(200);
+      res.status(200).json({ errorMsg: "" });
     } else {
       // verify user
       tweetController.getUser(req.body.screen_name, [
         req,
         res,
         () => {
-          res.sendStatus(200);
+          // res.sendStatus(200);
+          res.status(200).json({ error: "" });
         }
       ]);
     }

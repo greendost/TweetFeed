@@ -42,7 +42,9 @@ const TweetList: React.SFC<{
         className={cx(styles["listItem"], styles["listItem--bordered"])}
       >
         <div className={cx(styles["listItem__textGroup"], styles["wrap-text"])}>
-          <div>{tweet.text}</div>
+          <p className={cx(styles["para"], styles["para--tweet"])}>
+            {tweet.text}
+          </p>
           <div className={styles["footNote"]}>{tweet.created_at}</div>
         </div>
         <div>

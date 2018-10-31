@@ -6,7 +6,7 @@ import TweetList from "./TweetList";
 import cx from "classnames";
 
 const UserMainPanel: React.SFC = () => (
-  <div className={cx(appStyles["l-mainPanel2x2"], styles["panelContainer"])}>
+  <div className={cx(appStyles["l-mainPanel"], styles["panelContainer"])}>
     <TweetHeader />
     <div
       className={cx(

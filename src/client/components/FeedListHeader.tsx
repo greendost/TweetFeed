@@ -8,13 +8,18 @@ import { addCategory } from "../actions";
 import { ICategory } from "../actions";
 import { Dispatch } from "redux";
 
-interface IState {
+export interface IState {
   isExpanded: boolean;
   errorMsg: string;
+  currentCategory: string;
+}
+
+interface IKeyEvent {
+  key: string;
 }
 
 interface IEvent {
-  key: string;
+  target: { value: string };
 }
 
 class FeedListHeader extends Component<IProps, IState> {
@@ -23,23 +28,30 @@ class FeedListHeader extends Component<IProps, IState> {
 
     this.state = {
       isExpanded: false,
-      errorMsg: ""
+      errorMsg: "",
+      currentCategory: ""
     };
 
     this.toggleAddCategory = this.toggleAddCategory.bind(this);
     this.handleDoneClick = this.handleDoneClick.bind(this);
     this.handleEnter = this.handleEnter.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   toggleAddCategory() {
     this.setState({ isExpanded: !this.state.isExpanded });
   }
 
-  handleEnter(ev: IEvent) {
+  handleChange(ev: IEvent) {
+    this.setState({ currentCategory: ev.target.value });
+  }
+
+  handleEnter(ev: IKeyEvent) {
     if (ev.key === "Enter") {
-      var newCategoryName = (document.getElementById(
-        "newCategoryInput"
-      )! as HTMLInputElement).value!.trim();
+      var newCategoryName = this.state.currentCategory.trim();
+      // var newCategoryName = (document.getElementById(
+      //   "newCategoryInput"
+      // )! as HTMLInputElement).value!.trim();
 
       if (newCategoryName) {
         // check for dups
@@ -56,10 +68,34 @@ class FeedListHeader extends Component<IProps, IState> {
           this.props.addCategory(newCategoryName);
         }
       }
-      (document.getElementById("newCategoryInput")! as HTMLInputElement).value =
-        "";
+      this.setState({ currentCategory: "" });
     }
   }
+  // handleEnter(ev: IEvent) {
+  //   if (ev.key === "Enter") {
+  //     var newCategoryName = (document.getElementById(
+  //       "newCategoryInput"
+  //     )! as HTMLInputElement).value!.trim();
+
+  //     if (newCategoryName) {
+  //       // check for dups
+  //       var isDup = false;
+  //       for (let i = 0; i < this.props.tfItems.length; i++) {
+  //         if (this.props.tfItems[i].name === newCategoryName) {
+  //           isDup = true;
+  //           this.setState({ errorMsg: `${newCategoryName} already exists` });
+  //           break;
+  //         }
+  //       }
+  //       if (!isDup) {
+  //         this.setState({ errorMsg: "" });
+  //         this.props.addCategory(newCategoryName);
+  //       }
+  //     }
+  //     (document.getElementById("newCategoryInput")! as HTMLInputElement).value =
+  //       "";
+  //   }
+  // }
 
   handleDoneClick() {
     this.handleEnter({ key: "Enter" });
@@ -111,6 +147,8 @@ class FeedListHeader extends Component<IProps, IState> {
                 id="newCategoryInput"
                 className={styles["input"]}
                 onKeyUp={this.handleEnter}
+                onChange={this.handleChange}
+                value={this.state.currentCategory}
               />
             </div>
             <div
@@ -143,7 +181,7 @@ interface IDispatchProps {
 
 interface IOwnProps {}
 
-type IProps = IStateProps & IDispatchProps & IOwnProps;
+export type IProps = IStateProps & IDispatchProps & IOwnProps;
 
 const mapStateToProps = ({
   tfItems

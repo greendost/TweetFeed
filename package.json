@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "devold": "NODE_PATH=`npm root -g`; concurrently \"redis-server\" \"nodemon src/server/server.js\"",
     "type-check": "tsc --noEmit",
     "dev": "concurrently \"redis-server\" \"nodemon src/server/server.js\"",
@@ -17,6 +17,30 @@
       "db/"
     ]
   },
+  "jest": {
+    "setupFiles": [
+      "./test-setup.js"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.tsx?$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less)$": "identity-obj-proxy"
+    },
+    "testPathIgnorePatterns": [
+      "<rootDir>/playground"
+    ]
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -25,12 +49,20 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "babel-jest": "^23.6.0",
     "babel-loader": "^8.0.4",
     "case-sensitive-paths-webpack-plugin": "^2.1.2",
     "child_process": "^1.0.2",
     "concurrently": "^4.0.1",
     "css-loader": "^1.0.0",
+    "enzyme": "^3.7.0",
+    "enzyme-adapter-react-16": "^1.6.0",
+    "enzyme-to-json": "^3.3.4",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^23.6.0",
+    "redux-mock-store": "^1.5.3",
     "style-loader": "^0.21.0",
+    "ts-jest": "^23.10.4",
     "tslint": "^5.11.0",
     "typescript": "^3.1.1",
     "webpack": "^4.20.1",
@@ -41,12 +73,15 @@
   },
   "dependencies": {
     "@types/classnames": "^2.2.6",
+    "@types/enzyme": "^3.1.14",
+    "@types/jest": "^23.3.5",
     "@types/react": "^16.4.14",
     "@types/react-dom": "^16.0.8",
     "@types/react-hot-loader": "^4.1.0",
     "@types/react-redux": "^6.0.9",
     "@types/react-router-dom": "^4.3.1",
     "@types/redux": "^3.6.0",
+    "@types/redux-mock-store": "^1.0.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "classnames": "^2.2.6",

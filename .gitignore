@@ -6,3 +6,4 @@ db
 .DS_Store
 dump.rdb
 .env
+coverage

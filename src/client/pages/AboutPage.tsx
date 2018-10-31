@@ -13,16 +13,22 @@ const AboutPage: React.SFC<{}> = () => (
         className={cx(
           styles["subContainer"],
           styles["subContainer--large"],
-          styles["subContainer--leaf"],
+          styles["pad5"],
           styles["mt20"]
         )}
       >
         <div className={styles["headerText1"]}>About Tweetfeed</div>
         <p className={styles["para"]}>
-          This is a portfolio app for working with the Twitter API,
-          demonstrating use of React, Redux, Node, and general web development
-          skills.
+          This is a full stack portfolio app making use of the Twitter API,
+          demonstrating use of:
         </p>
+        <ul className={cx(styles["list"], styles["list--indent"])}>
+          <li>Frameworks - React, Express (Node)</li>
+          <li>State management - Redux</li>
+          <li>Strong typing system - Typescript</li>
+          <li>Test - Jest, Enzyme</li>
+          <li>General web development skills</li>
+        </ul>
       </div>
     </div>
   </div>

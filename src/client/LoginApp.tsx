@@ -44,7 +44,7 @@ class LoginApp extends Component<{}, IState> {
         this.setState({ isLoading: false });
       })
       .catch((err: string) => {
-        console.log(err);
+        // console.log(err);
       });
   }
 
@@ -68,10 +68,11 @@ class LoginApp extends Component<{}, IState> {
               Hi, welcome to my portfolio app: TweetFeed.
             </p>
             <p className={styles["para"]}>
-              By clicking the button below, you will activate the app, where you
-              will have fifteen minutes to explore, add users, make queries,
-              etc. If you like it, feel free to download a copy (coming soon)
-              and use your personal Twitter development key (all free).
+              Since this app uses my Twitter key, I have put in a session limit
+              of 15 minutes. Feel free to explore, organizing Twitter screen
+              names and queries within lists. If you like it, feel free to
+              download a copy (coming soon) and use your personal Twitter
+              development key.
             </p>
             <form
               method="POST"
@@ -95,7 +96,7 @@ class LoginApp extends Component<{}, IState> {
                 type="submit"
                 className={styles["form__button"]}
               >
-                {this.state.isLoading ? "Loading..." : "Start Session"}
+                {this.state.isLoading ? "Loading..." : "Start Session - 15 min"}
               </button>
             </form>
           </div>
