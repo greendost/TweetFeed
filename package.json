@@ -9,7 +9,7 @@
     "type-check": "tsc --noEmit",
     "dev": "concurrently \"redis-server\" \"nodemon src/server/server.js\"",
     "deploy": "pm2 deploy ecosystem.config.js production",
-    "prod": "webpack --config webpack.prod.js"
+    "prod": "webpack --config webpack.prod.js",
     "pm2prod": "npm install && webpack --config webpack.prod.js"
   },
   "nodemonConfig": {
