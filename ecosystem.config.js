@@ -30,7 +30,7 @@ module.exports = {
       path: process.env.TF_PROD_PATH,
       // 'post-deploy' : 'npm install && pm2 reload ecosystem.config.js --env production'
       "post-deploy":
-        "npm run pm2prod && pm2 startOrRestart ecosystem.json --env production"
+        "npm run pm2prod && pm2 startOrRestart ecosystem.config.js --env production"
     }
   }
 };
