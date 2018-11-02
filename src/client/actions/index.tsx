@@ -146,7 +146,8 @@ export function selectTFItem(
       },
       {
         params: {
-          screenname: tfItems[categoryIndex].list[tfIndex].query
+          screenname: tfItems[categoryIndex].list[tfIndex].query,
+          tweet_mode: "extended"
         }
       }
     );

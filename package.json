@@ -8,8 +8,9 @@
     "devold": "NODE_PATH=`npm root -g`; concurrently \"redis-server\" \"nodemon src/server/server.js\"",
     "type-check": "tsc --noEmit",
     "dev": "concurrently \"redis-server\" \"nodemon src/server/server.js\"",
-    "deploy-notusedyet": "pm2 deploy ecosystem.config.js production",
+    "deploy": "pm2 deploy ecosystem.config.js production",
     "prod": "webpack --config webpack.prod.js"
+    "pm2prod": "npm install && webpack --config webpack.prod.js"
   },
   "nodemonConfig": {
     "ignore": [
