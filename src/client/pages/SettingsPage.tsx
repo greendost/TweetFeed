@@ -113,7 +113,7 @@ class SettingsPage extends Component<IProps, IState> {
                 <input
                   type="text"
                   ref={this.exportFilename}
-                  className={cx(styles["mr10"], styles["input--min150pxWide"])}
+                  className={cx(styles["mr5"], styles["input--min150pxWide"])}
                   disabled={this.props.tfItems.length === 0}
                   placeholder={
                     this.props.tfItems.length === 0

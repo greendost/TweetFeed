@@ -38,7 +38,12 @@ const UserListSidePanel: React.SFC = () => {
         className={cx(styles["subContainer"], styles["clear-float-container"])}
       >
         <div
-          className={cx(styles["float-right"], styles["arrow"])}
+          className={cx(
+            styles["float-right"],
+            styles["arrow"],
+            styles["mr5"],
+            styles["mt5"]
+          )}
           onClick={toggleSidePanel}
           ref={arrowRef}
         >
